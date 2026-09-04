@@ -1,0 +1,215 @@
+// Sanskar — Neon Postgres schema (Vercel-hosted Next.js app)
+// DATABASE_URL = Neon pooled connection (used at runtime by serverless functions)
+// directUrl    = Neon direct/unpooled connection (used only for migrations)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ---------- Accounts ----------
+
+/// A devotee account. Password is bcrypt-hashed — never stored in plain text.
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  passwordHash  String
+  fullName      String
+  phone         String   @default("")
+  city          String   @default("")
+  country       String   @default("")
+  gotra         String   @default("")
+  timezone      String   @default("")
+  emailVerified Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  bookings           Booking[]
+  verificationTokens VerificationToken[]
+  passwordResets     PasswordResetToken[]
+
+  @@map("users")
+}
+
+/// A priest account + public profile shown to devotees.
+model Priest {
+  id                String   @id @default(cuid())
+  email             String   @unique
+  passwordHash      String
+  name              String
+  title             String
+  templeAffiliation String
+  specializations   String[] @default([])
+  languages         String[] @default([])
+  experienceYears   Int      @default(0)
+  rating            Float    @default(5.0)
+  pujasPerformed    Int      @default(0)
+  isOnline          Boolean  @default(true)
+  emailVerified     Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  bookings           Booking[]
+  portfolio          PortfolioItem[]
+  verificationTokens VerificationToken[]
+  passwordResets     PasswordResetToken[]
+
+  @@map("priests")
+}
+
+// ---------- Double opt-in email verification & forgot password ----------
+
+enum AccountRole {
+  DEVOTEE
+  PRIEST
+}
+
+/// One-time token emailed to confirm a new signup (double opt-in).
+model VerificationToken {
+  id        String      @id @default(cuid())
+  token     String      @unique
+  role      AccountRole
+  userId    String?
+  priestId  String?
+  expiresAt DateTime
+  createdAt DateTime    @default(now())
+
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  priest Priest? @relation(fields: [priestId], references: [id], onDelete: Cascade)
+
+  @@map("verification_tokens")
+}
+
+/// One-time token emailed for a "Forgot password" reset.
+model PasswordResetToken {
+  id        String      @id @default(cuid())
+  token     String      @unique
+  role      AccountRole
+  userId    String?
+  priestId  String?
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime    @default(now())
+
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  priest Priest? @relation(fields: [priestId], references: [id], onDelete: Cascade)
+
+  @@map("password_reset_tokens")
+}
+
+// ---------- Catalog ----------
+
+/// Puja / consultation service catalog.
+model PujaService {
+  id                String  @id
+  name              String
+  sanskritName      String
+  emoji             String
+  description       String
+  benefits          String
+  durationMinutes   Int
+  priceOnlineUsd    Int
+  priceInTempleUsd  Int
+  availableOnline   Boolean @default(true)
+  inTempleAvailable Boolean @default(true)
+
+  checklistItems PrepChecklistItem[]
+
+  @@map("puja_services")
+}
+
+/// A ritual-preparation checklist item for a puja (samagri, prep steps).
+model PrepChecklistItem {
+  id        String @id @default(cuid())
+  pujaId    String
+  label     String
+  sortOrder Int    @default(0)
+
+  puja PujaService @relation(fields: [pujaId], references: [id], onDelete: Cascade)
+
+  @@index([pujaId])
+  @@map("prep_checklist_items")
+}
+
+/// A month's auspicious-timing entries (shown converted to the devotee's local time).
+model Muhurat {
+  id           String   @id @default(cuid())
+  date         DateTime
+  startIst     String
+  endIst       String
+  occasion     String
+  panchangNote String
+  quality      String
+
+  @@map("muhurats")
+}
+
+// ---------- Bookings ----------
+
+enum PujaMode {
+  ONLINE_LIVE
+  IN_TEMPLE
+}
+
+enum BookingStatus {
+  UPCOMING
+  COMPLETED
+  CANCELLED
+}
+
+model Booking {
+  id          String        @id @default(cuid())
+  userId      String
+  priestId    String?
+  pujaName    String
+  priestName  String
+  mode        PujaMode
+  date        DateTime
+  timeSlot    String
+  priceUsd    Int
+  status      BookingStatus @default(UPCOMING)
+  sankalpName String        @default("")
+  createdAt   DateTime      @default(now())
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  priest       Priest?       @relation(fields: [priestId], references: [id])
+  transactions Transaction[]
+
+  @@index([userId])
+  @@index([priestId])
+  @@map("bookings")
+}
+
+model Transaction {
+  id        String   @id @default(cuid())
+  bookingId String
+  amountUsd Int
+  method    String
+  status    String
+  createdAt DateTime @default(now())
+
+  booking Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  @@index([bookingId])
+  @@map("transactions")
+}
+
+/// A major puja showcased with an optional photo on a priest's public profile.
+model PortfolioItem {
+  id          String   @id @default(cuid())
+  priestId    String
+  title       String
+  description String   @default("")
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+
+  priest Priest @relation(fields: [priestId], references: [id], onDelete: Cascade)
+
+  @@index([priestId])
+  @@map("portfolio_items")
+}

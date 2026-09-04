@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- No cleartext HTTP anywhere in the app; all traffic (Stripe checkout,
+         YouTube links) goes over HTTPS. Explicit even though targetSdk 28+
+         already defaults to this, so the intent survives future refactors. -->
+    <base-config cleartextTrafficPermitted="false" />
+</network-security-config>

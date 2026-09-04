@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sanskar — Your Mandir, Wherever You Are</title>
+<meta name="description" content="Book Hindu puja rituals online or performed on your behalf at partner mandirs in India. Griha Pravesh, Satyanarayan Katha, Rudrabhishek and more — for the Indian diaspora, worldwide.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🪔</text></svg>">
+<style>
+  :root {
+    --saffron:#B93E0A; --saffron-dark:#8A2D06; --marigold:#E8A100; --maroon:#7B1E3B;
+    --cream:#FFF8F1; --cream-card:#FFEFE0; --text:#3A2A20; --muted:#6E5A4B; --green:#2E7D32;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; font-family:'Segoe UI',system-ui,-apple-system,sans-serif; }
+  html,body { background:var(--cream); color:var(--text); }
+  a { color:inherit; }
+
+  /* ---- site chrome ---- */
+  .site-header { position:sticky; top:0; z-index:50; background:#fff; border-bottom:1px solid #eadbc9; }
+  .header-inner { max-width:1120px; margin:0 auto; padding:14px 20px; display:flex; align-items:center; gap:24px; }
+  .brand { display:flex; align-items:center; gap:10px; font-weight:800; font-size:20px; color:var(--saffron); cursor:pointer; }
+  .brand .mark { width:38px; height:38px; border-radius:50%; background:var(--saffron); display:flex; align-items:center; justify-content:center; font-size:19px; }
+  .site-nav { display:flex; gap:4px; margin-left:auto; }
+  .site-nav button { background:none; border:none; padding:9px 14px; border-radius:20px; font-size:14.5px; font-weight:600; color:var(--muted); cursor:pointer; }
+  .site-nav button:hover { background:var(--cream); }
+  .site-nav button.active { background:var(--cream-card); color:var(--saffron-dark); }
+  .header-actions { display:flex; gap:10px; align-items:center; }
+  .header-actions .avinit-sm { width:34px; height:34px; border-radius:50%; background:var(--saffron); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; cursor:pointer; }
+
+  .site-main { max-width:1120px; margin:0 auto; padding:28px 20px 60px; min-height:70vh; }
+  .site-footer { background:#2b1d14; color:#e8d5c0; margin-top:40px; }
+  .footer-inner { max-width:1120px; margin:0 auto; padding:36px 20px; display:flex; flex-wrap:wrap; gap:32px; justify-content:space-between; }
+  .footer-col h4 { color:#ffe8cc; font-size:14px; margin-bottom:10px; }
+  .footer-col a, .footer-col div { display:block; font-size:13px; color:#c9a88f; margin-bottom:6px; text-decoration:none; }
+  .footer-col a:hover { color:#ffe8cc; }
+  .footer-bottom { text-align:center; padding:16px; font-size:12px; color:#8a7562; border-top:1px solid rgba(255,255,255,.08); }
+
+  .view { display:none; } .view.active { display:block; }
+
+  /* ---- shared ---- */
+  .card { background:#fff; border-radius:16px; padding:16px; margin-bottom:12px; box-shadow:0 1px 3px rgba(0,0,0,.06); }
+  .btn { display:inline-block; width:auto; padding:13px 26px; background:var(--saffron); color:#fff; border:none; border-radius:26px; font-size:15px; font-weight:600; cursor:pointer; text-align:center; }
+  .btn.block { display:block; width:100%; }
+  .btn:hover { background:var(--saffron-dark); }
+  .btn.ghost { background:#fff; color:var(--saffron); border:1.5px solid var(--saffron); }
+  .btn.ghost:hover { background:var(--cream-card); }
+  .link { background:none; border:none; color:var(--saffron); cursor:pointer; font-size:14px; }
+  .field { width:100%; padding:13px 14px; border:1.5px solid #c9a88f; border-radius:10px; font-size:15px; margin-bottom:12px; background:#fff; color:var(--text); }
+  .field:focus { outline:none; border-color:var(--saffron); }
+  .chip { display:inline-block; padding:7px 13px; border:1.5px solid #c9a88f; border-radius:18px; font-size:13px; cursor:pointer; margin:0 6px 6px 0; background:#fff; color:var(--text); }
+  .chip.sel { background:var(--cream-card); border-color:var(--saffron); color:var(--saffron-dark); font-weight:600; }
+  .titleM { font-size:18px; font-weight:700; margin:18px 0 10px; }
+  .muted { color:var(--muted); font-size:12.5px; }
+  .badge { font-size:11px; font-weight:700; padding:3px 8px; border-radius:8px; }
+  .center-wrap { max-width:440px; margin:0 auto; }
+
+  /* ---- login/signup ---- */
+  .loginwrap { display:flex; flex-direction:column; align-items:center; padding:30px 12px; }
+  .logo { width:88px; height:88px; border-radius:50%; background:var(--saffron); display:flex; align-items:center; justify-content:center; font-size:40px; margin-bottom:14px; }
+  .appname { font-size:32px; font-weight:800; color:var(--saffron); }
+  .tagline { color:var(--muted); margin-bottom:26px; font-size:14px; text-align:center; }
+
+  /* ---- home ---- */
+  .banner { background:linear-gradient(100deg,var(--saffron),var(--maroon)); border-radius:22px; padding:30px; color:#fff; margin-bottom:20px; }
+  .banner b { font-size:26px; }
+  .banner p { color:#ffe8cc; font-size:15px; margin-top:8px; max-width:640px; }
+  .muhuratstrip { background:#FFE9BD; border-radius:16px; padding:16px 18px; margin-bottom:22px; }
+  .mrow { display:flex; align-items:center; gap:10px; padding:6px 0; font-size:13.5px; }
+  .mdate { font-weight:700; width:56px; flex-shrink:0; }
+  .grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
+  @media (min-width:640px) { .grid { grid-template-columns:repeat(3,1fr); } }
+  @media (min-width:920px) { .grid { grid-template-columns:repeat(4,1fr); } }
+  .tile { background:#fff; border-radius:16px; padding:16px; cursor:pointer; box-shadow:0 1px 3px rgba(0,0,0,.07); transition:transform .12s, box-shadow .12s; }
+  .tile:hover { transform:translateY(-3px); box-shadow:0 8px 20px rgba(185,62,10,.14); }
+  .tile .em { font-size:34px; }
+  .tile h4 { font-size:15px; margin-top:8px; }
+  .tile .skt { font-size:12px; color:var(--muted); }
+  .tile .pr { color:var(--saffron); font-weight:700; font-size:14px; margin-top:6px; }
+  .bnow { display:block; width:100%; margin-top:10px; padding:9px 0; background:var(--saffron); color:#fff; border:none; border-radius:18px; font-size:12.5px; font-weight:700; cursor:pointer; }
+  .bnow:hover { background:var(--saffron-dark); }
+  .chk { display:flex; align-items:flex-start; gap:10px; padding:7px 2px; font-size:13.5px; cursor:pointer; }
+  .chk input { width:17px; height:17px; accent-color:var(--saffron); flex-shrink:0; margin-top:1px; }
+  .chk.done span { text-decoration:line-through; color:var(--muted); }
+  .prog { height:6px; background:#eadbc9; border-radius:3px; margin:8px 0 14px; overflow:hidden; max-width:480px; }
+  .prog i { display:block; height:100%; background:var(--saffron); border-radius:3px; transition:width .25s; }
+  .vid { display:flex; align-items:center; gap:10px; background:#fff; border-radius:14px; padding:12px 14px; margin-bottom:8px; box-shadow:0 1px 3px rgba(0,0,0,.07); text-decoration:none; color:var(--text); max-width:480px; }
+  .vid:hover { background:var(--cream-card); }
+  .vid .play { font-size:24px; color:var(--saffron); }
+  .two-col { display:grid; grid-template-columns:1fr; gap:24px; }
+  @media (min-width:800px) { .two-col { grid-template-columns:1.3fr 1fr; } }
+
+  /* ---- muhurat ---- */
+  .mgrid { display:grid; grid-template-columns:1fr; gap:10px; }
+  @media (min-width:760px) { .mgrid { grid-template-columns:1fr 1fr; } }
+  .daybox { width:58px; flex-shrink:0; background:var(--cream-card); border-radius:12px; text-align:center; padding:9px 0; }
+  .daybox .d { font-size:20px; font-weight:800; color:var(--saffron); }
+  .daybox .w { font-size:10px; }
+
+  /* ---- priests ---- */
+  .pgrid { display:grid; grid-template-columns:1fr; gap:14px; }
+  @media (min-width:760px) { .pgrid { grid-template-columns:1fr 1fr; } }
+  .avatar { width:52px; height:52px; border-radius:50%; background:var(--cream-card); display:flex; align-items:center; justify-content:center; font-size:24px; flex-shrink:0; }
+  .dot { width:9px; height:9px; border-radius:50%; display:inline-block; margin-left:6px; }
+
+  /* ---- profile ---- */
+  .avinit { width:64px; height:64px; border-radius:50%; background:var(--saffron); color:#fff; display:flex; align-items:center; justify-content:center; font-size:24px; font-weight:700; flex-shrink:0; }
+  .prow { display:flex; align-items:center; gap:12px; padding:15px 18px; border-bottom:1px solid #f2e4d3; cursor:pointer; font-size:14.5px; background:#fff; border-left:none;border-right:none;border-top:none; width:100%; text-align:left; color:var(--text); }
+  .prow:last-child { border-bottom:none; }
+  .prow:hover { background:var(--cream); }
+
+  .topbar { display:flex; align-items:center; gap:10px; margin-bottom:16px; }
+  .back { background:none; border:none; font-size:24px; cursor:pointer; color:var(--text); }
+  .topbar h2 { font-size:21px; }
+
+  .toast { position:fixed; bottom:26px; left:50%; transform:translateX(-50%); background:#3A2A20; color:#fff; padding:12px 22px; border-radius:24px; font-size:14px; opacity:0; transition:opacity .3s; pointer-events:none; z-index:100; white-space:nowrap; box-shadow:0 8px 24px rgba(0,0,0,.3); }
+  .toast.show { opacity:1; }
+
+  /* ---- responsive: hide site-nav on very small screens into a compact bar ---- */
+  @media (max-width:640px) {
+    .site-nav button { padding:8px 10px; font-size:13px; }
+    .brand span.brandtext { display:none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand" onclick="tab('home')"><span class="mark">🪔</span><span class="brandtext">Sanskar</span></div>
+    <nav class="site-nav" id="siteNav">
+      <button data-t="home" onclick="tab('home')" class="active">Home</button>
+      <button data-t="muhurat" onclick="tab('muhurat')">Muhurat</button>
+      <button data-t="priests" onclick="tab('priests')">Priests</button>
+      <button data-t="profile" onclick="tab('profile')">Profile</button>
+    </nav>
+    <div class="header-actions" id="headerActions">
+      <button class="btn ghost" style="padding:9px 18px;font-size:13.5px" onclick="show('login')">Login</button>
+    </div>
+  </div>
+</header>
+
+<main class="site-main">
+  <div id="content">
+
+    <!-- LOGIN -->
+    <div class="view active" id="v-login">
+      <div class="loginwrap center-wrap">
+        <div class="logo">🪔</div>
+        <div class="appname">Sanskar</div>
+        <div class="tagline">Your Mandir, Wherever You Are — book Hindu puja rituals online or performed on your behalf at partner mandirs in India.</div>
+        <div style="margin-bottom:16px">
+          <span class="chip sel" id="roleDev" onclick="setRole('devotee')">🙏 I am a Devotee</span>
+          <span class="chip" id="rolePr" onclick="setRole('priest')">🧘 I am a Priest</span>
+        </div>
+        <input class="field" id="email" value="demo@sanskar.app" placeholder="Email">
+        <input class="field" id="pwd" type="password" value="demo123" placeholder="Password">
+        <button class="btn block" id="loginbtn" onclick="doLogin()">Login</button>
+        <button class="link" id="signuplink" style="margin-top:10px" onclick="role==='priest'?show('priestsignup'):show('signup')">New to Sanskar? Create an account</button>
+        <div class="muted" style="margin-top:14px" id="demohint">Demo login: demo@sanskar.app / demo123</div>
+      </div>
+    </div>
+
+    <!-- SIGNUP -->
+    <div class="view" id="v-signup">
+      <div class="loginwrap center-wrap">
+        <div class="appname" style="font-size:26px">Create Account</div>
+        <div class="tagline">Book pujas with verified priests from anywhere</div>
+        <input class="field" placeholder="Full Name">
+        <input class="field" placeholder="Email">
+        <input class="field" placeholder="Phone (with country code)">
+        <input class="field" type="password" placeholder="Password (min 6 characters)">
+        <input class="field" type="password" placeholder="Confirm Password">
+        <button class="btn block" onclick="login()">Sign Up</button>
+        <button class="link" style="margin-top:10px" onclick="show('login')">Already have an account? Login</button>
+      </div>
+    </div>
+
+    <!-- HOME -->
+    <div class="view" id="v-home">
+      <div class="banner">
+        <b>🙏 Namaste, Demo</b>
+        <p>Book pujas with verified priests — live online or performed on your behalf at partner mandirs in India. Griha Pravesh, Satyanarayan Katha, Rudrabhishek and more, for devotees around the world.</p>
+      </div>
+      <div class="muhuratstrip">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <b style="font-size:15px">✨ Shubh Muhurat this month</b>
+          <button class="link" onclick="tab('muhurat')">See all →</button>
+        </div>
+        <div id="striprows"></div>
+      </div>
+      <div class="titleM">Puja Services</div>
+      <div class="grid" id="tiles"></div>
+    </div>
+
+    <!-- PUJA DETAIL -->
+    <div class="view" id="v-detail"></div>
+
+    <!-- PREP GUIDE -->
+    <div class="view" id="v-guide"></div>
+
+    <!-- PRIEST SIGNUP -->
+    <div class="view" id="v-priestsignup">
+      <div class="loginwrap center-wrap">
+        <div class="appname" style="font-size:24px">🧘 Priest Registration</div>
+        <div class="tagline">Offer your seva to devotees worldwide. Profiles are verified before going live.</div>
+        <input class="field" placeholder="Full Name (e.g. Pt. Ram Sharma)">
+        <input class="field" placeholder="Title (e.g. Vedacharya)">
+        <input class="field" placeholder="Temple / Parampara affiliation">
+        <input class="field" placeholder="Specializations (comma separated)">
+        <input class="field" placeholder="Years of experience">
+        <input class="field" placeholder="Email">
+        <input class="field" type="password" placeholder="Password">
+        <button class="btn block" onclick="show('priesthome');renderPriestHome()">Register as Priest</button>
+        <button class="link" style="margin-top:10px" onclick="show('login')">Already registered? Login</button>
+      </div>
+    </div>
+
+    <!-- PRIEST DASHBOARD -->
+    <div class="view" id="v-priesthome"></div>
+
+    <!-- PRIEST PROFILE (devotee view) -->
+    <div class="view" id="v-priestprofile"></div>
+
+    <!-- SANSKAR AI CHAT -->
+    <div class="view" id="v-chat">
+      <div class="topbar"><button class="back" onclick="show('profile')">‹</button><h2>🤖 SanskarAI Support</h2></div>
+      <div id="chatlog" style="display:flex;flex-direction:column;gap:8px;min-height:340px;max-width:640px"></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin:10px 0;max-width:640px">
+        <span class="chip" onclick="ask('How do online pujas work?')">Online pujas?</span>
+        <span class="chip" onclick="ask('How do I cancel or reschedule?')">Cancel/reschedule</span>
+        <span class="chip" onclick="ask('When will I get my prasad?')">Prasad delivery</span>
+        <span class="chip" onclick="ask('What is Pay Later?')">Pay Later</span>
+        <span class="chip" onclick="ask('Are the priests verified?')">Priests verified?</span>
+      </div>
+      <div style="display:flex;gap:8px;max-width:640px">
+        <input class="field" id="chatin" placeholder="Ask SanskarAI…" style="margin:0" onkeydown="if(event.key==='Enter')ask()">
+        <button class="btn" style="width:56px;padding:10px" onclick="ask()">➤</button>
+      </div>
+    </div>
+
+    <!-- IN-APP CHECKOUT -->
+    <div class="view" id="v-checkout">
+      <div class="center-wrap">
+        <div style="display:flex;align-items:center;gap:10px;background:#fff;border-radius:12px;padding:14px 16px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,.08)">
+          <span style="font-size:18px">🔒</span>
+          <div style="flex:1">
+            <b style="font-size:14.5px">Secure Checkout</b><br>
+            <span class="muted">buy.stripe.com</span>
+          </div>
+          <button class="back" onclick="show(lastView)" style="font-size:18px">✕</button>
+        </div>
+        <div class="card" style="padding:24px">
+          <div style="text-align:center;padding:10px 0 16px">
+            <div style="font-size:36px">💳</div>
+            <b style="font-size:16px">Stripe Checkout</b>
+            <div class="muted" style="margin-top:8px">In the Android app, the Stripe payment page loads inside the app (WebView) — no browser switch. Here on the website, checkout opens Stripe's secure page directly.</div>
+          </div>
+          <div style="border:1.5px dashed #c9a88f;border-radius:12px;padding:14px;margin-bottom:14px">
+            <div class="muted" style="font-size:12px">CARD NUMBER</div>
+            <div style="letter-spacing:2px;color:#b9a894">•••• •••• •••• ••••</div>
+            <div style="display:flex;gap:18px;margin-top:8px">
+              <span><span class="muted" style="font-size:12px">EXPIRY</span><br><span style="color:#b9a894">MM / YY</span></span>
+              <span><span class="muted" style="font-size:12px">CVC</span><br><span style="color:#b9a894">•••</span></span>
+            </div>
+          </div>
+          <a class="btn block" style="text-align:center;text-decoration:none" href="https://buy.stripe.com/28E28teuTaH80Tbezr33W00" target="_blank" rel="noopener">Open Stripe payment page ↗</a>
+          <button class="btn ghost block" style="margin-top:10px" onclick="payLater()">Pay Later — keep booking &amp; go to my orders</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MUHURAT -->
+    <div class="view" id="v-muhurat">
+      <h2 style="color:var(--saffron);font-size:24px">Shubh Muhurat — July 2026</h2>
+      <div class="muted" style="margin:6px 0 16px;font-size:13.5px">Auspicious dates for this month, shown in your local time (set in Profile) converted from the actual ritual timings in India (IST).</div>
+      <div class="mgrid" id="mulist"></div>
+      <div class="muted" style="margin-top:12px">⚠️ Indicative timings from a general panchang. Exact muhurat varies by city and time zone — our priests confirm it at booking.</div>
+    </div>
+
+    <!-- PRIESTS -->
+    <div class="view" id="v-priests">
+      <h2 style="color:var(--saffron);font-size:24px">Our Priests</h2>
+      <div class="muted" style="margin:6px 0 12px;font-size:13.5px">Verified pandits and acharyas from renowned temples across India. Click a priest to see photos of major pujas they have performed.</div>
+      <span class="chip" id="onlinechip" onclick="toggleOnline()">Show online now</span>
+      <div class="pgrid" id="priestlist" style="margin-top:10px"></div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="view" id="v-profile">
+      <div class="two-col">
+        <div>
+          <div class="card" style="background:var(--cream-card);display:flex;gap:16px;align-items:center;border-radius:20px">
+            <div class="avinit">DB</div>
+            <div>
+              <b style="font-size:18px">Demo Bhakt</b><br>
+              <span style="font-size:13.5px">demo@sanskar.app</span><br>
+              <span class="muted">San Jose, USA</span><br>
+              <span class="muted">🕒 <select id="tzsel" onchange="userTz=this.value;renderAll()" style="border:1px solid #c9a88f;border-radius:6px;background:#fff;color:var(--text);font-size:12px;padding:3px 5px;max-width:200px">
+                <option value="America/Los_Angeles" selected>America/Los_Angeles</option>
+                <option value="America/New_York">America/New_York</option>
+                <option value="America/Chicago">America/Chicago</option>
+                <option value="Europe/London">Europe/London</option>
+                <option value="Europe/Berlin">Europe/Berlin</option>
+                <option value="Asia/Dubai">Asia/Dubai</option>
+                <option value="Asia/Singapore">Asia/Singapore</option>
+                <option value="Australia/Sydney">Australia/Sydney</option>
+                <option value="Asia/Kolkata">Asia/Kolkata (IST)</option>
+              </select></span>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;margin:14px 0">
+            <div class="card" style="flex:1;text-align:center;background:#FFE9BD;margin:0"><b style="font-size:24px" id="statDone">2</b><br><span class="muted">Pujas availed</span></div>
+            <div class="card" style="flex:1;text-align:center;background:#FFE9BD;margin:0"><b style="font-size:24px" id="statUp">0</b><br><span class="muted">Upcoming</span></div>
+          </div>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden;align-self:start">
+          <button class="prow" onclick="toast('Edit profile: name, phone, city, country, gotra')">✏️&nbsp; Update profile details <span style="margin-left:auto">›</span></button>
+          <button class="prow" onclick="show('orders')">🧾&nbsp; Order history &amp; services availed <span style="margin-left:auto">›</span></button>
+          <button class="prow" onclick="openChat()">🤖&nbsp; Help &amp; support — SanskarAI <span style="margin-left:auto">›</span></button>
+          <button class="prow" style="color:#C62828" onclick="logout()">↩&nbsp; Logout <span style="margin-left:auto">›</span></button>
+        </div>
+      </div>
+      <div class="muted" style="text-align:center;margin-top:20px">Sanskar v1.0 • Serving the devotee diaspora with love 🙏</div>
+    </div>
+
+    <!-- ORDERS -->
+    <div class="view" id="v-orders">
+      <div class="topbar"><button class="back" onclick="show('profile')">‹</button><h2>Order History</h2></div>
+      <div class="mgrid" id="orderlist"></div>
+    </div>
+
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-col">
+      <h4>🪔 Sanskar</h4>
+      <div>Your Mandir, Wherever You Are.</div>
+      <div>Online &amp; offline puja booking for the Indian diaspora.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Explore</h4>
+      <a href="#" onclick="tab('home');return false;">Puja Services</a>
+      <a href="#" onclick="tab('muhurat');return false;">Shubh Muhurat</a>
+      <a href="#" onclick="tab('priests');return false;">Our Priests</a>
+      <a href="#" onclick="show('priestsignup');return false;">Become a Priest</a>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <a href="#" onclick="show('profile');openChat();return false;">SanskarAI Chat</a>
+      <div>support@sanskar.app</div>
+      <a href="PRIVACY.html">Privacy Policy</a>
+    </div>
+    <div class="footer-col">
+      <h4>Get the App</h4>
+      <div>Android app available — same account works on web and mobile.</div>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 Sanskar. All rights reserved. Om Shanti 🙏</div>
+</footer>
+
+<script>
+const STRIPE='https://buy.stripe.com/28E28teuTaH80Tbezr33W00';
+const yt=q=>'https://www.youtube.com/results?search_query='+q.split(' ').join('+');
+const commonItems=[
+ "Take a bath and wear fresh/traditional clothes","Clean the puja area and lay a clean cloth or chowki",
+ "Diya with ghee/oil, cotton wicks and matchbox","Incense sticks (agarbatti) and dhoop",
+ "Roli/kumkum, haldi and akshat (unbroken rice)","Fresh flowers and garland","Fruits and sweets for prasad",
+ "Betel leaves, betel nuts (supari) and coconut","Kalash (small pot) with clean water and gangajal if available"];
+const guides={
+ griha_pravesh:{intro:"Enter the new home only at the confirmed muhurat. The lady of the house traditionally enters first with a kalash, right foot forward.",
+  items:["Mango-leaf toran for the main door","Swastik drawn with kumkum on both sides of entrance","Milk and a new vessel for the boiling-milk ritual","Navagraha and Vastu havan samagri (if havan included)","New broom and salt for the house","Keys of the new house kept in the puja"],
+  vids:[["Griha Pravesh puja vidhi — step by step",yt("griha pravesh puja vidhi step by step")],["Griha Pravesh samagri list",yt("griha pravesh puja samagri list")],["Vastu tips for entering a new home",yt("griha pravesh vastu tips new home")]]},
+ satyanarayan:{intro:"Traditionally performed on Purnima or after happy milestones. The whole family should sit for the katha and stay until aarti.",
+  items:["Banana leaves/stems to decorate the puja area","Panchamrit — milk, curd, honey, ghee and sugar","Sheera/panjiri prasad (wheat flour, sugar, ghee) — 1.25 measure","Tulsi leaves for the prasad","Photo/idol of Lord Satyanarayan (Vishnu)","Yellow cloth and yellow flowers (marigold preferred)"],
+  vids:[["Satyanarayan katha vidhi at home",yt("satyanarayan katha puja vidhi at home")],["Satyanarayan puja samagri list",yt("satyanarayan puja samagri list")],["Satyanarayan aarti",yt("satyanarayan bhagwan aarti")]]},
+ ganesh:{intro:"Ganesh ji is invoked before every new beginning. Keep the idol facing east or west, never towards the south.",
+  items:["Ganesh idol (clay preferred) or photo","Durva grass (21 blades) — essential for Ganesh puja","Modak or besan/motichoor laddoo for bhog","Red flowers and red cloth","Sindoor for the idol"],
+  vids:[["Ganesh puja vidhi at home",yt("ganesh puja vidhi at home")],["Ganesh puja samagri list",yt("ganesh puja samagri list")],["Ganesh aarti — Sukhkarta Dukhharta",yt("sukhkarta dukhharta ganesh aarti")]]},
+ lakshmi:{intro:"Best performed on Friday evenings, Purnima or Diwali. Keep the house clean and well-lit — Lakshmi ji is welcomed with light.",
+  items:["Lakshmi idol/photo with Ganesh ji","Lotus flowers (or pink/red flowers)","Kheer or white sweets for bhog","Coins or silver items to place in the puja","Rice and a small pot of turmeric water","Rangoli at the entrance"],
+  vids:[["Lakshmi puja vidhi at home",yt("lakshmi puja vidhi at home")],["Lakshmi puja samagri list",yt("lakshmi puja samagri list")],["Lakshmi aarti — Om Jai Lakshmi Mata",yt("om jai lakshmi mata aarti")]]},
+ rudra:{intro:"Performed on a Shivling, ideally on Mondays, Pradosh or during Shravan. Devotees observe a light/satvik diet on the day.",
+  items:["Shivling (if at home) or temple visit arranged","Bel patra (bilva leaves) — washed, stems removed","Panchamrit items separately: milk, curd, honey, ghee, sugar","Gangajal — the key abhishek liquid","White flowers and white sandalwood paste","Bhasma/vibhuti and rudraksha (if available)"],
+  vids:[["Rudrabhishek puja vidhi",yt("rudrabhishek puja vidhi")],["Rudrabhishek samagri list",yt("rudrabhishek puja samagri list")],["Shiva Rudrashtakam chanting",yt("rudrashtakam shiva stotra")]]},
+ navagraha:{intro:"Keep your birth details (date, time, place) ready — the priest tailors the sankalp and mantra counts to your kundali.",
+  items:["Navadhanya — nine types of grains for the nine planets","Nine colours of cloth pieces (or as guided by priest)","Sesame oil and a separate lamp for Shani","Birth details / kundali shared with the priest in advance","Donation items (til, urad, mustard oil) as advised"],
+  vids:[["Navagraha shanti puja vidhi",yt("navagraha shanti puja vidhi")],["Navagraha puja samagri",yt("navagraha puja samagri list")],["Navagraha mantra chanting",yt("navagraha mantra chanting")]]},
+ mundan:{intro:"Choose a muhurat suited to the child's nakshatra. Keep the child well-fed and rested before the ceremony.",
+  items:["New razor/blade (barber usually arranges)","Wheat-flour dough ball to collect the hair","Gangajal to wash the head","New clothes for the child","Small gift/dakshina for the barber","Sweets for distribution"],
+  vids:[["Mundan sanskar vidhi",yt("mundan sanskar puja vidhi")],["Mundan ceremony preparation",yt("mundan ceremony preparation checklist")],["Why mundan sanskar is performed",yt("mundan sanskar significance")]]},
+ anna:{intro:"The baby's first solid food — usually kheer — is fed at the muhurat by a maternal uncle or grandparent.",
+  items:["Kheer (rice pudding) freshly prepared for the first feed","New silver spoon or bowl (traditional)","New clothes for the baby","Objects for the career-picking ritual: book, pen, money, food, clay","Banana leaf or new plate for serving"],
+  vids:[["Annaprashan sanskar vidhi",yt("annaprashan sanskar puja vidhi")],["Annaprashan preparation at home",yt("annaprashan ceremony preparation")],["Annaprashan rice ceremony explained",yt("annaprashan rice ceremony significance")]]},
+ pitru:{intro:"Performed on the ancestor's tithi or during Pitru Paksha. Keep the departed's name, gotra and relation ready for the sankalp.",
+  items:["Black sesame seeds (til) — essential for tarpan","Kusha grass and a copper/brass water pot","Barley flour and rice for pind daan (if included)","Food to offer to a brahmin, cow, dog and crow","Departed ancestor's name, gotra and relation noted down","White clothes for the karta (person performing)"],
+  vids:[["Shraddh and tarpan vidhi",yt("shraddh tarpan vidhi pitru paksha")],["Pitru Paksha rituals explained",yt("pitru paksha shraddh rituals explained")],["Tarpan samagri and method",yt("tarpan vidhi samagri")]]},
+ vivah:{intro:"Share both kundalis with the acharya in advance. The mandap, havan kund and seating are arranged at the venue.",
+  items:["Mandap decoration and havan kund at the venue","Havan samagri, samidha (wood) and ghee for the sacred fire","Varmala (2 garlands), mangalsutra and sindoor","Kanyadaan items as guided by the acharya","Both kundalis / birth details shared in advance","Rice, flowers and shagun items for saat pheras"],
+  vids:[["Vedic vivah sanskar rituals explained",yt("hindu vivah sanskar rituals explained")],["Saptapadi — the seven vows",yt("saptapadi seven vows hindu wedding meaning")],["Hindu wedding samagri checklist",yt("hindu wedding puja samagri checklist")]]},
+ sundar:{intro:"Usually recited on Tuesday or Saturday. All present may join the recitation — books/screens for followers help.",
+  items:["Ramcharitmanas or Sundarkand book (extra copies for family)","Hanuman ji photo or idol","Sindoor and chameli (jasmine) oil for Hanuman ji","Besan or boondi laddoo for bhog","Red flowers and red cloth"],
+  vids:[["Sundarkand path full with lyrics",yt("sundarkand path full with lyrics")],["How to do Sundarkand path at home",yt("sundarkand path vidhi at home")],["Hanuman Chalisa",yt("hanuman chalisa")]]},
+ vahan:{intro:"Wash the vehicle before the puja and bring it to an open space. Keep the keys in the puja thali.",
+  items:["Vehicle washed and parked in an open, clean spot","Four lemons — one under each wheel","Flower garland for the vehicle","Swastik drawn with kumkum on the bonnet/handle","Coconut to break before first drive","Vehicle keys placed in the puja thali"],
+  vids:[["Vahan puja vidhi for new vehicle",yt("vahan puja vidhi new car")],["New vehicle puja samagri",yt("new vehicle puja samagri list")],["Why lemons are used in vahan puja",yt("vahan puja lemon significance")]]}
+};
+const pujas=[
+ {id:"griha_pravesh",e:"🏠",n:"Griha Pravesh",s:"गृह प्रवेश",po:79,pt:149,on:true,d:"House-warming ceremony performed before moving into a new home, invoking Vastu Purush and Lord Ganesha.",dur:"2h"},
+ {id:"satyanarayan",e:"🙏",n:"Satyanarayan Katha",s:"सत्यनारायण कथा",po:69,pt:129,on:true,d:"Puja and katha dedicated to Lord Vishnu, traditionally performed on Purnima or family occasions.",dur:"2h 30m"},
+ {id:"ganesh",e:"🐘",n:"Ganesh Puja",s:"गणेश पूजा",po:39,pt:79,on:true,d:"Invocation of Lord Ganesha, the remover of obstacles, before new beginnings.",dur:"1h"},
+ {id:"lakshmi",e:"🪔",n:"Lakshmi Puja",s:"लक्ष्मी पूजा",po:49,pt:99,on:true,d:"Worship of Goddess Lakshmi for wealth and abundance.",dur:"1h 30m"},
+ {id:"rudra",e:"🔱",n:"Rudrabhishek",s:"रुद्राभिषेक",po:89,pt:169,on:true,d:"Sacred abhishek of Lord Shiva with panchamrit and Rudra mantras.",dur:"2h"},
+ {id:"navagraha",e:"🪐",n:"Navagraha Shanti",s:"नवग्रह शांति",po:99,pt:189,on:true,d:"Pacification of the nine planetary deities to reduce malefic effects.",dur:"2h 30m"},
+ {id:"mundan",e:"👶",n:"Mundan Sanskar",s:"मुंडन संस्कार",po:59,pt:119,on:true,d:"First hair-shaving ceremony of a child, one of the sixteen sanskars.",dur:"1h 30m"},
+ {id:"anna",e:"🍚",n:"Annaprashan",s:"अन्नप्राशन",po:49,pt:99,on:true,d:"First rice-feeding ceremony of an infant with divine blessings.",dur:"1h"},
+ {id:"pitru",e:"🪷",n:"Pitru Paksha Shraddh",s:"पितृ पक्ष श्राद्ध",po:79,pt:139,on:true,d:"Tarpan and shraddh rituals honouring ancestors.",dur:"2h"},
+ {id:"vivah",e:"💞",n:"Vivah Sanskar",s:"विवाह संस्कार",po:299,pt:499,on:false,temple:true,d:"Complete Vedic wedding ceremony with all rituals, by an experienced acharya.",dur:"4h"},
+ {id:"consult",e:"🗣️",n:"Online Consultation",s:"ऑनलाइन परामर्श",po:20,pt:20,on:true,temple:false,d:"One-on-one 30-min video consultation with an experienced acharya — advice on rituals, muhurat, kundali and sanskars. Fixed $20 fee.",dur:"30m"},
+ {id:"sundar",e:"🏹",n:"Sundarkand Path",s:"सुंदरकांड पाठ",po:59,pt:109,on:true,temple:true,d:"Recitation of the Sundarkand from Ramcharitmanas.",dur:"3h"},
+ {id:"vahan",e:"🚗",n:"Vahan Puja",s:"वाहन पूजा",po:29,pt:59,on:true,temple:true,d:"Blessing ceremony for a newly purchased vehicle.",dur:"45m"}];
+pujas.forEach(p=>{if(p.temple===undefined)p.temple=true;});
+const muhurats=[
+ ["03","Fri","Griha Pravesh","07:12","09:35","Shukla Tritiya, Uttara Phalguni nakshatra","Good","#E8A100"],
+ ["05","Sun","Vehicle Purchase / Vahan Puja","10:05","12:20","Shukla Panchami, Hasta nakshatra","Excellent","#2E7D32"],
+ ["09","Thu","Satyanarayan Katha","06:45","08:50","Ekadashi, Anuradha nakshatra","Excellent","#2E7D32"],
+ ["11","Sat","New Business / Ganesh Puja","11:30","13:40","Trayodashi, Mula nakshatra","Average","#8D6E63"],
+ ["13","Mon","Purnima Satyanarayan Puja","05:55","07:30","Purnima, Purva Ashadha nakshatra","Excellent","#2E7D32"],
+ ["17","Fri","Mundan Sanskar","09:15","11:45","Krishna Chaturthi, Shatabhisha nakshatra","Good","#E8A100"],
+ ["21","Tue","Griha Pravesh","08:20","10:10","Krishna Ashtami, Ashwini nakshatra","Good","#E8A100"],
+ ["24","Fri","Property Purchase","10:40","12:55","Krishna Ekadashi, Rohini nakshatra","Excellent","#2E7D32"],
+ ["27","Mon","Annaprashan / Namkaran","07:05","09:00","Amavasya end, Punarvasu nakshatra","Average","#8D6E63"],
+ ["29","Wed","Lakshmi Puja","06:30","08:45","Shukla Dwitiya, Magha nakshatra","Good","#E8A100"]];
+let userTz='America/Los_Angeles';
+const istDate=(day,t)=>new Date(`2026-07-${day}T${t}:00+05:30`);
+const fmtT=d=>d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',timeZone:userTz});
+const fmtD=d=>d.toLocaleDateString('en-US',{day:'2-digit',month:'short',timeZone:userTz});
+const fmt12=t=>{const[h,m]=t.split(':').map(Number);const ap=h>=12?'PM':'AM';const h12=((h+11)%12)+1;return String(h12).padStart(2,'0')+':'+String(m).padStart(2,'0')+' '+ap;};
+function localWin(day,s,e){
+  if(userTz==='Asia/Kolkata') return `${fmt12(s)} – ${fmt12(e)} IST`;
+  const sd=istDate(day,s),ed=istDate(day,e);
+  const istDay=`${sd.toLocaleDateString('en-US',{day:'2-digit',month:'short',timeZone:'Asia/Kolkata'})}`;
+  const locDay=fmtD(sd);
+  return `${fmtT(sd)} – ${fmtT(ed)}${locDay!==istDay?', '+locDay:''}`;
+}
+const tzCity=()=>userTz.split('/').pop().replace(/_/g,' ');
+const priests=[
+ {id:"p1",n:"Pt. Ramesh Shastri",t:"Vedacharya • 24 yrs",a:"Kashi Vishwanath Seva Samiti, Varanasi",sp:"Griha Pravesh, Rudrabhishek, Navagraha Shanti",l:"Hindi, English, Sanskrit",r:4.9,p:3200,on:true},
+ {id:"p2",n:"Pt. Suresh Trivedi",t:"Jyotishacharya • 18 yrs",a:"Shri Kalkaji Mandir, Delhi",sp:"Satyanarayan Katha, Navagraha Shanti, Kundali Milan",l:"Hindi, English",r:4.8,p:2100,on:true},
+ {id:"p3",n:"Acharya Venkatesh Iyer",t:"Agama Pandit • 30 yrs",a:"Sri Venkateswara Temple, Tirupati Parampara",sp:"Lakshmi Puja, Satyanarayan Katha, Vivah Sanskar",l:"Tamil, Telugu, English, Sanskrit",r:5.0,p:4500,on:true},
+ {id:"p4",n:"Pt. Anil Joshi",t:"Karmakandi Pandit • 15 yrs",a:"Haridwar Ganga Sabha",sp:"Pitru Paksha Shraddh, Mundan Sanskar, Ganesh Puja",l:"Hindi, Marathi, English",r:4.7,p:1650,on:false},
+ {id:"p5",n:"Pt. Debashish Bhattacharya",t:"Smarta Purohit • 21 yrs",a:"Kalighat Mandir Parishad, Kolkata",sp:"Lakshmi Puja, Annaprashan, Sundarkand Path",l:"Bengali, Hindi, English",r:4.8,p:2800,on:true},
+ {id:"p6",n:"Acharya Mahesh Dwivedi",t:"Vedacharya • 27 yrs",a:"Ujjain Mahakaleshwar Seva Trust",sp:"Rudrabhishek, Vahan Puja, Griha Pravesh",l:"Hindi, Gujarati, English",r:4.9,p:3900,on:false}];
+let portfolio=[
+ {pid:"p1",title:"Maha Rudrabhishek — Shravan Somvar",desc:"Led the sacred Shravan Monday Rudrabhishek at Kashi with 108 bel patra offerings.",img:null},
+ {pid:"p1",title:"Griha Pravesh for NRI families",desc:"Performed 300+ online Griha Pravesh ceremonies for families across the US, Canada and UK.",img:null},
+ {pid:"p3",title:"Kalyanotsavam Seva",desc:"Conducted the annual Kalyanotsavam following Tirupati parampara.",img:null}];
+const priestBookingsFor=(name,st)=>orders.filter(o=>o.pr===name&&o.st===st);
+let orders=[
+ {id:"SNK-1041",n:"Satyanarayan Katha",pr:"Pt. Suresh Trivedi",m:"🖥 Online live puja",d:"14 May 2026 • 08:00 AM IST",amt:69,st:"Completed",c:"#2E7D32"},
+ {id:"SNK-1187",n:"Ganesh Puja",pr:"Pt. Ramesh Shastri",m:"🛕 Performed at mandir",d:"09 Jun 2026 • 10:30 AM IST",amt:79,st:"Completed",c:"#2E7D32"},
+ {id:"SNK-1203",n:"Rudrabhishek",pr:"Acharya Mahesh Dwivedi",m:"🛕 Performed at mandir",d:"25 Jun 2026 • 06:00 AM IST",amt:169,st:"Cancelled",c:"#C62828"}];
+let nextOrder=1300, onlineOnly=false, lastView='home';
+function checkout(from){lastView=from;show('checkout');}
+function payLater(){toast('Booking kept — payment pending. Pay any time from your orders.');show('orders');}
+function downloadInvoice(id){
+  const o=orders.find(x=>x.id===id);
+  const pay=o.st==='Completed'?['PAID','#2E7D32']:o.st==='Upcoming'?['PAYMENT PENDING (PAY LATER)','#B26A00']:['CANCELLED','#C62828'];
+  const html=`<!DOCTYPE html><html><head><meta charset="utf-8"><style>
+    body{font-family:sans-serif;color:#3A2A20;margin:24px}
+    .head{display:flex;justify-content:space-between;border-bottom:3px solid #B93E0A;padding-bottom:14px}
+    .brand{font-size:26px;font-weight:800;color:#B93E0A}
+    table{width:100%;border-collapse:collapse;margin-top:8px}
+    td,th{padding:9px 10px;border:1px solid #E5D2BE;font-size:13px;text-align:left}
+    th{background:#FFEFE0}.total td{font-weight:800;background:#FFF8F1}
+    .status{display:inline-block;margin-top:10px;padding:5px 12px;border-radius:6px;font-weight:800;font-size:12px;color:#fff;background:${pay[1]}}
+    .foot{margin-top:30px;font-size:11px;color:#6E5A4B;border-top:1px solid #E5D2BE;padding-top:10px}
+  </style></head><body>
+    <div class="head"><div><div class="brand">🪔 Sanskar</div><div style="font-size:12px;color:#6E5A4B">Your Mandir, Wherever You Are • support@sanskar.app</div></div>
+    <div style="text-align:right"><b>INVOICE</b><br>${o.id}<br><span style="font-size:12px;color:#6E5A4B">Issued: ${new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})}</span></div></div>
+    <h3 style="color:#7B1E3B">Billed To</h3><div style="font-size:13px">Demo Bhakt<br>demo@sanskar.app<br>San Jose, USA</div>
+    <h3 style="color:#7B1E3B">Service Details</h3>
+    <table><tr><th>Description</th><th>Details</th></tr>
+    <tr><td>Puja</td><td>${o.n}</td></tr>
+    <tr><td>Mode</td><td>${o.m.replace(/^[^ ]+ /,'')}</td></tr>
+    <tr><td>Priest</td><td>${o.pr}</td></tr>
+    <tr><td>Scheduled</td><td>${o.d}</td></tr>
+    <tr class="total"><td>Total Amount</td><td>USD $${o.amt}</td></tr></table>
+    <span class="status">${pay[0]}</span>
+    <div class="foot">System-generated invoice from Sanskar. Prasad shipping (in-temple pujas) included. Questions: support@sanskar.app quoting the invoice number. Om Shanti 🙏</div>
+  </body></html>`;
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([html],{type:'text/html'}));
+  a.download=`Sanskar-Invoice-${o.id}.html`;
+  document.body.appendChild(a);a.click();a.remove();
+  toast('⬇ Invoice downloaded');
+}
+
+const $=id=>document.getElementById(id);
+const noNav=['login','signup','checkout','priestsignup','priesthome','priestprofile','chat'];
+function show(v){
+  document.querySelectorAll('.view').forEach(e=>e.classList.remove('active'));
+  $('v-'+v).classList.add('active');
+  $('siteNav').style.display=noNav.includes(v)?'none':'flex';
+  window.scrollTo({top:0,behavior:'instant'});
+}
+function tab(t){show(t);document.querySelectorAll('.site-nav button').forEach(b=>b.classList.toggle('active',b.dataset.t===t));}
+function login(){renderAll();$('headerActions').innerHTML='<div class="avinit-sm" onclick="tab(\'profile\')" title="Profile">DB</div>';tab('home');}
+function logout(){setRole('devotee');$('headerActions').innerHTML='<button class="btn ghost" style="padding:9px 18px;font-size:13.5px" onclick="show(\'login\')">Login</button>';show('login');}
+
+/* ---- role toggle & login ---- */
+let role='devotee';
+function setRole(r){
+  role=r;
+  $('roleDev').classList.toggle('sel',r==='devotee');
+  $('rolePr').classList.toggle('sel',r==='priest');
+  $('email').value=r==='priest'?'priest@sanskar.app':'demo@sanskar.app';
+  $('pwd').value=r==='priest'?'priest123':'demo123';
+  $('loginbtn').textContent=r==='priest'?'Login as Priest':'Login';
+  $('signuplink').textContent=r==='priest'?'New priest? Register to offer seva':'New to Sanskar? Create an account';
+  $('demohint').textContent=r==='priest'?'Demo priest: priest@sanskar.app / priest123':'Demo login: demo@sanskar.app / demo123';
+}
+function doLogin(){
+  if(role==='priest'){ $('headerActions').innerHTML='<div class="avinit-sm" style="background:var(--maroon)" title="Priest">🧘</div>'; show('priesthome'); renderPriestHome(); }
+  else login();
+}
+
+/* ---- priest dashboard ---- */
+const DEMO_PRIEST='Pt. Ramesh Shastri', DEMO_PID='p1';
+function renderPriestHome(){
+  const pr=priests.find(x=>x.id===DEMO_PID);
+  const up=priestBookingsFor(DEMO_PRIEST,'Upcoming'), done=priestBookingsFor(DEMO_PRIEST,'Completed');
+  const bcard=o=>`<div class="card"><div style="display:flex;justify-content:space-between"><b>${o.n}</b><b style="color:var(--saffron)">$${o.amt}</b></div><div style="font-size:13px">${o.d}</div><div class="muted" style="font-size:12px">${o.m} • ${o.id}</div></div>`;
+  const myPf=portfolio.filter(x=>x.pid===DEMO_PID);
+  $('v-priesthome').innerHTML=`
+  <div class="center-wrap" style="max-width:640px">
+  <div style="display:flex;align-items:center;gap:10px;background:var(--cream-card);border-radius:16px;padding:16px;margin-bottom:14px">
+    <div class="avatar" style="width:54px;height:54px;font-size:26px">🧘</div>
+    <div><b style="font-size:17px">Pranam, ${pr.n}</b><br><span class="muted">${pr.t} • ${pr.a}</span></div>
+    <button class="back" style="margin-left:auto;font-size:20px" onclick="logout()">↩</button>
+  </div>
+  <div style="display:flex;gap:10px;margin-bottom:16px">
+    <div class="card" style="flex:1;text-align:center;background:#FFE9BD;margin:0"><b style="font-size:20px">${up.length}</b><br><span class="muted">Upcoming</span></div>
+    <div class="card" style="flex:1;text-align:center;background:#FFE9BD;margin:0"><b style="font-size:20px">${done.length}</b><br><span class="muted">Completed</span></div>
+    <div class="card" style="flex:1;text-align:center;background:#FFE9BD;margin:0"><b style="font-size:20px">★${pr.r}</b><br><span class="muted">Rating</span></div>
+  </div>
+  <div class="titleM">📅 Upcoming bookings</div>
+  ${up.length?up.map(bcard).join(''):'<div class="muted">No upcoming bookings yet.</div>'}
+  <div class="titleM">✅ Completed pujas</div>
+  ${done.length?done.map(bcard).join(''):'<div class="muted">No completed pujas yet.</div>'}
+  <div class="titleM">🖼 My major pujas (shown to devotees)</div>
+  <div class="muted" style="font-size:12px;margin-bottom:8px">Add photos of significant pujas you have performed.</div>
+  <div class="card" style="background:var(--cream-card)">
+    <input class="field" id="pfTitle" placeholder="Puja title (e.g. Maha Rudrabhishek, Kashi)">
+    <input class="field" id="pfDesc" placeholder="Short description (optional)">
+    <label class="btn ghost block" style="text-align:center;cursor:pointer;display:block">📷 Add photo
+      <input type="file" accept="image/*" style="display:none" onchange="pfPreview(this)"></label>
+    <img id="pfImg" style="display:none;width:100%;max-height:180px;object-fit:cover;border-radius:10px;margin-top:8px">
+    <button class="btn block" style="margin-top:10px" onclick="addPortfolio()">Add to my profile</button>
+  </div>
+  <div id="pfList" style="margin-top:10px">${myPf.map(pfCard).join('')}</div>
+  <div style="height:16px"></div>
+  </div>`;
+}
+let pfImgData=null;
+function pfPreview(inp){
+  const f=inp.files[0]; if(!f)return;
+  const r=new FileReader(); r.onload=e=>{pfImgData=e.target.result;const im=$('pfImg');im.src=pfImgData;im.style.display='block';}; r.readAsDataURL(f);
+}
+function pfCard(x){
+  return `<div class="card" style="display:flex;gap:12px;align-items:center">${x.img?`<img src="${x.img}" style="width:64px;height:64px;object-fit:cover;border-radius:12px">`:'<div style="width:64px;height:64px;border-radius:12px;background:var(--cream-card);display:flex;align-items:center;justify-content:center;font-size:26px">🛕</div>'}<div><b style="font-size:14px">${x.title}</b><br><span class="muted" style="font-size:12px">${x.desc||''}</span></div></div>`;
+}
+function addPortfolio(){
+  const t=$('pfTitle').value.trim();
+  if(!t){toast('Please give the puja a title');return;}
+  portfolio.unshift({pid:DEMO_PID,title:t,desc:$('pfDesc').value.trim(),img:pfImgData});
+  pfImgData=null; renderPriestHome(); toast('Added to your profile ✓');
+}
+
+/* ---- priest profile (devotee view) ---- */
+function priestProfile(pid){
+  const p=priests.find(x=>x.id===pid); const pf=portfolio.filter(x=>x.pid===pid);
+  $('v-priestprofile').innerHTML=`
+  <div class="center-wrap" style="max-width:640px">
+  <div class="topbar"><button class="back" onclick="tab('priests')">‹</button><h2>${p.n}</h2></div>
+  <div class="card" style="background:var(--cream-card);border-radius:18px">
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="avatar" style="width:60px;height:60px;font-size:28px">🧘</div>
+      <div><b style="font-size:16px">${p.n}</b> <span class="dot" style="background:${p.on?'var(--green)':'#bbb'}"></span><br><span class="muted">${p.t}</span><br><span class="muted">${p.a}</span></div>
+    </div>
+    <div style="margin-top:10px;color:var(--marigold);font-weight:700">★ ${p.r} • ${p.p}+ pujas performed</div>
+    <div style="font-size:12.5px;margin-top:4px">Specializes in: ${p.sp}</div>
+    <div class="muted" style="font-size:12.5px">Languages: ${p.l}</div>
+  </div>
+  <div class="titleM">🖼 Major pujas performed</div>
+  <div class="muted" style="font-size:12px;margin-bottom:8px">Photos and highlights uploaded by the priest.</div>
+  ${pf.length?pf.map(x=>`<div class="card" style="padding:0;overflow:hidden">${x.img?`<img src="${x.img}" style="width:100%;height:200px;object-fit:cover">`:'<div style="height:90px;background:var(--cream-card);display:flex;align-items:center;justify-content:center;font-size:36px">🛕</div>'}<div style="padding:12px"><b style="font-size:14px">${x.title}</b><br><span class="muted" style="font-size:12px">${x.desc||''}</span></div></div>`).join(''):'<div class="muted">This priest hasn\'t added portfolio highlights yet.</div>'}
+  <div style="height:16px"></div>
+  </div>`;
+  show('priestprofile');
+}
+
+/* ---- SanskarAI chatbot ---- */
+const aiFaqs=[
+ [["online puja","how do online","video call","live puja"],"For an online puja, you receive a video-call link 30 minutes before the muhurat. The priest takes the sankalp in your name, guides you step by step, and you participate from home with the samagri from the preparation checklist. A recording is shared afterwards."],
+ [["cancel","reschedule","change date","postpone"],"You can cancel or reschedule free of charge up to 24 hours before the puja — just contact support with your order ID (Profile → Order history). Within 24 hours, a 50% fee applies as the priest and samagri are already committed."],
+ [["refund","money back"],"Refunds for eligible cancellations are processed to your original payment method within 5–7 business days. If a puja could not be performed on our side, you receive a full refund automatically."],
+ [["prasad","shipping","delivery","courier"],"For in-temple pujas, prasad is shipped from India within 3 business days and typically arrives in 10–14 days internationally. Tracking is emailed to you. Shipping is included in the price."],
+ [["pay later","payment pending"],"Pay Later keeps your booking confirmed with payment pending. You can complete payment any time from your order in Order History. Bookings unpaid 24 hours before the muhurat may be released."],
+ [["payment","card","stripe","upi"],"Payments are processed securely by Stripe. We accept international cards, and you can also choose Pay Later. An invoice is available for every order."],
+ [["invoice","receipt","bill"],"Every order has a downloadable invoice — go to Profile → Order history → Download invoice, and save it as a PDF."],
+ [["muhurat","timing","auspicious","timezone","local time"],"The Muhurat tab shows this month's auspicious windows converted to your local timezone (set it in Profile). Timings are indicative — the priest confirms the exact muhurat for your city when you book."],
+ [["priest","pandit","verified","acharya"],"All priests on Sanskar are verified — we check temple affiliation, training lineage and experience. You can see each priest's specializations, languages, rating and photos of major pujas on their profile."],
+ [["consult","advice","guidance","kundali","astro"],"Online Consultation is a 30-minute one-on-one video session with an acharya for a fixed $20 — great for kundali questions, muhurat advice or choosing the right puja. Book it from the Home page."],
+ [["samagri","items","checklist","prepare","what do i need"],"Every puja has a Ritual Preparation Guide — open the puja and click 'Ritual preparation guide & checklist'. It lists all samagri with a tick-off checklist and helpful videos."],
+ [["human","agent","support team","email","contact"],"You can reach our human seva team at support@sanskar.app — we reply within 24 hours. For urgent booking-day issues, mention URGENT and your order ID."],
+ [["hello","hi","hey","namaste"],"Namaste! 🙏 How can I help you today? Ask about bookings, payments, prasad, muhurats, priests, or preparing for your puja."],
+ [["thank","thanks"],"Dhanyavad! 🙏 May your puja bring peace and prosperity. Anything else I can help with?"]];
+function aiReply(q){
+  q=q.toLowerCase();
+  const m=aiFaqs.find(f=>f[0].some(k=>q.includes(k)));
+  return m?m[1]:"I'm still learning about that! 🙏 For anything I can't answer, our human seva team at support@sanskar.app will gladly help. Meanwhile, try asking about bookings, online pujas, payments, prasad, muhurats or priests.";
+}
+let chatStarted=false;
+function openChat(){
+  if(!chatStarted){bubble("🙏 Namaste! I am SanskarAI, your seva assistant. Ask me anything about bookings, online pujas, payments, prasad, muhurats or priests — or click a quick question below.",false);chatStarted=true;}
+  show('chat');
+}
+function bubble(text,user){
+  const d=document.createElement('div');
+  d.style.cssText=`max-width:80%;padding:10px 14px;border-radius:16px;font-size:13.5px;${user?'align-self:flex-end;background:var(--saffron);color:#fff;border-bottom-right-radius:4px':'align-self:flex-start;background:#fff;border-bottom-left-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,.08)'}`;
+  d.textContent=text; $('chatlog').appendChild(d);
+}
+function ask(preset){
+  const inp=$('chatin'); const q=(preset||inp.value).trim(); if(!q)return;
+  bubble(q,true); inp.value='';
+  setTimeout(()=>{bubble(aiReply(q),false);},250);
+}
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
+
+function renderAll(){
+  $('tiles').innerHTML=pujas.map(p=>`<div class="tile" onclick="detail('${p.id}')"><div class="em">${p.e}</div><h4>${p.n}</h4><div class="skt">${p.s}</div><div class="pr">From $${p.po}</div><div class="muted">${p.on&&p.temple?'Online • In-temple':p.on?'Online only':'In-temple only'}</div><button class="bnow" onclick="event.stopPropagation();checkout('home')">Book Now</button></div>`).join('');
+  $('mulist').innerHTML=muhurats.map(m=>`<div class="card" style="display:flex;gap:12px;align-items:center"><div class="daybox"><div class="d">${m[0]}</div><div class="w">${m[1]}</div></div><div style="flex:1"><b style="font-size:14px">${m[2]}</b><br><span style="font-size:13px;color:var(--saffron);font-weight:600">🕒 ${localWin(m[0],m[3],m[4])} (${tzCity()})</span><br><span class="muted">${fmt12(m[3])} – ${fmt12(m[4])} IST</span><br><span class="muted">${m[5]}</span></div><b style="color:${m[7]};font-size:12px">${m[6]}</b></div>`).join('');
+  $('striprows').innerHTML=[muhurats[2],muhurats[4],muhurats[6]].map(m=>`<div class="mrow"><span class="mdate">${m[0]} Jul</span><span style="flex:1">${m[2]}<br><span class="muted">${localWin(m[0],m[3],m[4])} your time</span></span>${m[6]==='Excellent'?'<span style="color:var(--marigold);font-size:16px">★</span>':''}</div>`).join('');
+  renderPriests(); renderOrders();
+}
+function renderPriests(){
+  $('priestlist').innerHTML=priests.filter(p=>!onlineOnly||p.on).map(p=>`<div class="card" style="cursor:pointer" onclick="priestProfile('${p.id}')"><div style="display:flex;gap:12px"><div class="avatar">🧘</div><div style="flex:1"><b style="font-size:14.5px">${p.n}</b><span class="dot" style="background:${p.on?'var(--green)':'#bbb'}"></span><br><span class="muted">${p.t}</span><br><span class="muted">${p.a}</span></div><div style="text-align:right"><b style="color:var(--marigold)">★ ${p.r}</b><br><span class="muted">${p.p}+ pujas</span></div></div><div style="font-size:12.5px;margin-top:8px">Specializes in: ${p.sp}</div><div class="muted">Languages: ${p.l}</div>${p.on?'<div style="color:var(--green);font-size:12px;font-weight:600;margin-top:5px">● Available now for online puja</div>':''}<div style="color:var(--saffron);font-size:12px;margin-top:5px">View profile & photos ›</div></div>`).join('');
+}
+function toggleOnline(){onlineOnly=!onlineOnly;$('onlinechip').classList.toggle('sel',onlineOnly);$('onlinechip').textContent=onlineOnly?'Showing online now':'Show online now';renderPriests();}
+function renderOrders(){
+  $('orderlist').innerHTML=orders.length?orders.map(o=>`<div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><b style="font-size:15px">${o.n}</b><span class="badge" style="color:${o.c};background:${o.c}20">${o.st}</span></div><div class="muted" style="margin-top:4px">Order ${o.id}</div><div style="font-size:13.5px">${o.d}</div><div class="muted">Priest: ${o.pr}</div><div style="display:flex;justify-content:space-between;margin-top:6px;font-size:13px"><span>${o.m}</span><b style="color:var(--saffron)">$${o.amt}</b></div><div style="text-align:right;margin-top:6px"><button class="link" style="font-size:13px" onclick="downloadInvoice('${o.id}')">⬇ Download invoice</button></div></div>`).join(''):'<div style="text-align:center;padding:60px 0"><div style="font-size:44px">🪷</div><b>No bookings yet</b><br><span class="muted">Book your first puja from the Home page</span></div>';
+  $('statDone').textContent=orders.filter(o=>o.st==='Completed').length;
+  $('statUp').textContent=orders.filter(o=>o.st==='Upcoming').length;
+}
+let sel={};
+function detail(id){
+  const p=pujas.find(x=>x.id===id);
+  sel={p,mode:p.on?'online':'temple',date:'10 Jul',slot:'08:00 AM',priest:priests[0].n};
+  renderDetail();show('detail');
+}
+function setSel(k,v){sel[k]=v;if(k==='mode'&&v==='online')sel.priest=priests.find(p=>p.on).n;renderDetail();}
+function renderDetail(){
+  const p=sel.p, price=sel.mode==='online'?p.po:p.pt;
+  const plist=sel.mode==='online'?priests.filter(x=>x.on):priests;
+  const modeNote=p.id==='consult'?'A one-on-one video session with the acharya at your chosen time — fixed fee, no samagri needed.':sel.mode==='online'?'Join live over video call — the priest guides you step by step.':'Performed on your behalf at a partner mandir with sankalp in your name. Recording + prasad shipping included.';
+  $('v-detail').innerHTML=`
+  <div class="center-wrap" style="max-width:640px">
+  <div class="topbar"><button class="back" onclick="tab('home')">‹</button><h2>${p.n}</h2></div>
+  <div style="font-size:20px">${p.e}&nbsp; ${p.s}</div>
+  <p style="font-size:13.5px;margin:8px 0 4px">${p.d}</p>
+  <div class="muted">Duration: ~${p.dur}</div>
+  <button class="btn ghost" style="margin-top:12px" onclick="openGuide('${p.id}')">📋 Ritual preparation guide &amp; checklist</button>
+  <div class="titleM">How would you like the puja?</div>
+  ${p.on?`<span class="chip ${sel.mode==='online'?'sel':''}" onclick="setSel('mode','online')">${p.id==='consult'?'Online session':'Online live'} — $${p.po}</span>`:''}
+  ${p.temple?`<span class="chip ${sel.mode==='temple'?'sel':''}" onclick="setSel('mode','temple')">At mandir for you — $${p.pt}</span>`:''}
+  <div class="muted" style="margin-top:4px">${modeNote}</div>
+  <div class="titleM">Choose date</div>
+  ${['08 Jul','10 Jul','14 Jul','21 Jul'].map(d=>`<span class="chip ${sel.date===d?'sel':''}" onclick="setSel('date','${d}')">${d}</span>`).join('')}
+  <div class="titleM">Choose time slot</div>
+  ${['06:00 AM','08:00 AM','10:30 AM','05:00 PM','07:30 PM'].map(s=>`<span class="chip ${sel.slot===s?'sel':''}" onclick="setSel('slot','${s}')">${s}</span>`).join('')}
+  <div class="titleM">Choose priest</div>
+  ${plist.map(x=>`<div class="card" style="cursor:pointer;${sel.priest===x.n?'background:var(--cream-card);border:1.5px solid var(--saffron)':''}" onclick="setSel('priest','${x.n}')"><b style="font-size:14px">${x.n}</b> ${x.on?'<span style="color:var(--green);font-size:11px;float:right">Online</span>':''}<br><span class="muted">${x.l} • ★ ${x.r}</span></div>`).join('')}
+  <div class="titleM">Name for sankalp</div>
+  <input class="field" id="sankalp" value="Demo Bhakt">
+  <button class="btn block" onclick="book()">Book for $${price} • ${sel.date}, ${sel.slot} IST</button>
+  <div style="height:20px"></div>
+  </div>`;
+}
+function book(){
+  const p=sel.p, price=sel.mode==='online'?p.po:p.pt;
+  orders.unshift({id:'SNK-'+(nextOrder++),n:p.n,pr:sel.priest,m:sel.mode==='online'?'🖥 Online live puja':'🛕 Performed at mandir',d:sel.date+' 2026 • '+sel.slot+' IST',amt:price,st:'Upcoming',c:'#1565C0'});
+  renderOrders();toast('🙏 Booking added — complete payment to confirm');checkout('orders');
+}
+
+/* ---- preparation guide ---- */
+let guideChecks={}, guideId=null;
+function openGuide(id){
+  guideId=id;
+  if(!guideChecks[id]) guideChecks[id]=[];
+  renderGuide(); show('guide');
+}
+function toggleChk(i){
+  guideChecks[guideId][i]=!guideChecks[guideId][i];
+  renderGuide();
+}
+function renderGuide(){
+  const p=pujas.find(x=>x.id===guideId), g=guides[guideId];
+  const items=commonItems.concat(g.items), chk=guideChecks[guideId];
+  const done=items.reduce((a,_,i)=>a+(chk[i]?1:0),0);
+  $('v-guide').innerHTML=`
+  <div class="center-wrap" style="max-width:640px">
+  <div class="topbar"><button class="back" onclick="detail('${guideId}')">‹</button><h2>Preparation Guide</h2></div>
+  <div style="font-size:19px;font-weight:800;color:var(--saffron)">${p.e}&nbsp; ${p.n}</div>
+  <div class="muhuratstrip" style="margin-top:10px;font-size:13px">💡 ${g.intro}</div>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
+    <b style="font-size:15px">Samagri &amp; preparation checklist</b>
+    <b style="color:var(--saffron)">${done}/${items.length}</b>
+  </div>
+  <div class="prog"><i style="width:${items.length?Math.round(done*100/items.length):0}%"></i></div>
+  ${items.map((it,i)=>`<label class="chk ${chk[i]?'done':''}"><input type="checkbox" ${chk[i]?'checked':''} onchange="toggleChk(${i})"><span>${it}</span></label>`).join('')}
+  <div class="titleM">📺 Popular videos to prepare</div>
+  ${g.vids.map(v=>`<a class="vid" href="${v[1]}" target="_blank" rel="noopener"><span class="play">▶</span><span><b style="font-size:13.5px">${v[0]}</b><br><span class="muted">Watch on YouTube</span></span></a>`).join('')}
+  <div class="muted" style="margin:10px 0 20px">For online pujas, keep these items ready at home — the priest guides you on the video call. For in-temple pujas, all samagri is arranged by the mandir.</div>
+  </div>`;
+}
+renderAll();
+</script>
+</body>
+</html>

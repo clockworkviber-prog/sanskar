@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  background: #fff8f1;
+  color: #3a2a20;
+}
+
+.field {
+  @apply w-full rounded-xl border border-[#c9a88f] bg-white px-4 py-3 text-[15px] outline-none focus:border-saffron;
+}
+
+.btn-primary {
+  @apply block w-full rounded-full bg-saffron px-6 py-3 text-center font-semibold text-white transition hover:bg-saffron-dark disabled:cursor-not-allowed disabled:opacity-60;
+}
+
+.btn-link {
+  @apply text-sm font-medium text-saffron hover:underline;
+}
+
+.chip {
+  @apply cursor-pointer rounded-full border border-[#c9a88f] bg-white px-4 py-2 text-sm transition;
+}
+
+.chip-selected {
+  @apply border-saffron bg-cream-card font-semibold text-saffron-dark;
+}

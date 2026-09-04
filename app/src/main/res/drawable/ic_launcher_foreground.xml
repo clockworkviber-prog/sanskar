@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Diya (oil lamp) with flame -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- flame -->
+    <path
+        android:fillColor="#FFD54F"
+        android:pathData="M54,30 C58,38 62,42 62,48 C62,53 58.4,56 54,56 C49.6,56 46,53 46,48 C46,42 50,38 54,30 Z" />
+    <path
+        android:fillColor="#FF8F00"
+        android:pathData="M54,40 C56,44 58,46 58,49 C58,51.8 56.2,53.5 54,53.5 C51.8,53.5 50,51.8 50,49 C50,46 52,44 54,40 Z" />
+    <!-- lamp bowl -->
+    <path
+        android:fillColor="#FFF3E0"
+        android:pathData="M32,60 L76,60 C76,70 66.5,78 54,78 C41.5,78 32,70 32,60 Z" />
+    <!-- lamp base -->
+    <path
+        android:fillColor="#FFE0B2"
+        android:pathData="M42,78 L66,78 L62,84 L46,84 Z" />
+</vector>
