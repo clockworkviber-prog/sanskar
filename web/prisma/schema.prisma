@@ -58,6 +58,7 @@ model Priest {
   portfolio          PortfolioItem[]
   verificationTokens VerificationToken[]
   passwordResets     PasswordResetToken[]
+  notifications      Notification[]
 
   @@map("priests")
 }
@@ -162,27 +163,55 @@ enum BookingStatus {
   CANCELLED
 }
 
-model Booking {
-  id          String        @id @default(cuid())
-  userId      String
-  priestId    String?
-  pujaName    String
-  priestName  String
-  mode        PujaMode
-  date        DateTime
-  timeSlot    String
-  priceUsd    Int
-  status      BookingStatus @default(UPCOMING)
-  sankalpName String        @default("")
-  createdAt   DateTime      @default(now())
+/// A priest's response to a booking assigned/offered to them — separate
+/// from BookingStatus, which tracks the booking's own lifecycle.
+enum PriestResponse {
+  PENDING
+  ACCEPTED
+  DECLINED
+}
 
-  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  priest       Priest?       @relation(fields: [priestId], references: [id])
-  transactions Transaction[]
+model Booking {
+  id             String         @id @default(cuid())
+  userId         String
+  priestId       String?
+  pujaName       String
+  priestName     String
+  mode           PujaMode
+  date           DateTime
+  timeSlot       String
+  priceUsd       Int
+  status         BookingStatus  @default(UPCOMING)
+  priestResponse PriestResponse @default(PENDING)
+  sankalpName    String         @default("")
+  createdAt      DateTime       @default(now())
+
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  priest        Priest?        @relation(fields: [priestId], references: [id])
+  transactions  Transaction[]
+  notifications Notification[]
 
   @@index([userId])
   @@index([priestId])
   @@map("bookings")
+}
+
+/// In-app notifications for a priest — new booking requests, claim
+/// opportunities, etc. Polled by the priest dashboard.
+model Notification {
+  id        String   @id @default(cuid())
+  priestId  String
+  bookingId String?
+  type      String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  priest  Priest   @relation(fields: [priestId], references: [id], onDelete: Cascade)
+  booking Booking? @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+
+  @@index([priestId])
+  @@map("notifications")
 }
 
 model Transaction {

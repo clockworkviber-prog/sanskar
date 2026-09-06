@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { getSession } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
+import { notifyPriest } from "@/lib/notifications";
 
 const schema = z.object({
   pujaId: z.string().min(1),
@@ -65,6 +66,15 @@ export async function POST(req: NextRequest) {
       status: "UPCOMING",
     },
   });
+
+  if (priestId) {
+    await notifyPriest({
+      priestId,
+      bookingId: booking.id,
+      type: "NEW_BOOKING",
+      message: `New booking request: ${puja.name} on ${date.toDateString()} (${d.timeSlot}) — $${priceUsd}.`,
+    });
+  }
 
   return NextResponse.json({ id: booking.id });
 }

@@ -25,23 +25,43 @@ forgot-password), matching the Android app's devotee/priest role split.
   always available as an alternative.
 - **Order history** (`/orders`) — real bookings with live payment status,
   and a "Complete payment" link back to checkout for anything still unpaid.
+- **Priest dashboard** (`/priest-dashboard`) — three live widgets, polling
+  `/api/priest/dashboard-data` every 20s:
+  - **Notifications** — a priest is notified when a devotee books them by
+    name; unread count badge, mark-all-read.
+  - **Orders in queue — requested for you** — bookings a devotee assigned
+    to this priest specifically, with **Accept** / **Decline**. Declining
+    releases the booking back to the open queue rather than leaving the
+    devotee stuck.
+  - **Open queue** — unassigned bookings ("To be assigned") any priest can
+    **claim** on a first-come basis; claiming is done via an atomic
+    `updateMany` guard so two priests can't both claim the same booking.
+  - This is polling, not real push notifications — see "What's not yet
+    built" below.
 - Full Prisma schema for the rest of the app's data — priest portfolio,
   prep checklists, muhurats — so those screens are ready to be built the
   same way.
 
 ## What's not yet built
 
-Priest dashboard content (viewing/managing their bookings, portfolio
-uploads), the SanskarAI chatbot, Muhurat browsing, and ritual prep
-checklists still only exist in the Android app and the static `website/`
-mockup. The data model for all of it already exists in
+Priest portfolio uploads, the SanskarAI chatbot, Muhurat browsing, and
+ritual prep checklists still only exist in the Android app and the static
+`website/` mockup. The data model for all of it already exists in
 `prisma/schema.prisma` — porting a screen is "build the page + a couple of
 API routes," not a redesign.
 
-Also not yet done: priest assignment is manual (a booking either gets the
-priest the devotee picked, or "To be assigned" if none was available/
-chosen) — there's no admin flow yet for staff to assign an unassigned
-booking to a real priest.
+**Notifications are polling-based, not push.** The priest dashboard
+re-fetches every 20 seconds while the tab is open — there's no email/SMS/
+web-push alert if a priest isn't looking at the dashboard. Wiring a real
+push channel (web push, or an email via Resend, already set up for auth)
+is a natural next step once this matters for real usage.
+
+## Schema changed — re-run `db:push`
+
+This update added `Notification`, `PriestResponse`, and a `priestResponse`
+column on `Booking`. Run `npm run db:push` again (pointed at your Neon
+database) before deploying, or the new priest dashboard API routes will
+fail against the old schema.
 
 ## Local setup
 
